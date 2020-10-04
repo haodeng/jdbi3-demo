@@ -1,13 +1,8 @@
-package modle;
+package model;
 
-public class User {
-    private int id;
-    private String name;
-
-    public User(int id, String name) {
-        this.id = id;
-        this.name = name;
-    }
+public class Contact {
+    public int id;
+    public String name;
 
     public int getId() {
         return id;
