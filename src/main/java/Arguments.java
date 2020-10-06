@@ -3,7 +3,7 @@ import org.jdbi.v3.core.Jdbi;
 
 import java.util.*;
 
-public class ArgumentsDemo {
+public class Arguments {
 
     /**
      * When a SQL statement uses ? tokens,
@@ -200,7 +200,7 @@ public class ArgumentsDemo {
     }
 
     public static void main(String[] args) {
-        ArgumentsDemo argumentsDemo = new ArgumentsDemo();
+        Arguments argumentsDemo = new Arguments();
         argumentsDemo.positionalArguments();
         argumentsDemo.namedArguments();
 

@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.UUID;
 
-public class CustomizedArgumentsDemo {
+public class CustomizedArguments {
 
     //The Argument interface wraps a single value into a binding.
     static class UUIDArgument implements Argument {
@@ -90,7 +90,7 @@ public class CustomizedArgumentsDemo {
     }
 
     public static void main(String[] args) {
-        CustomizedArgumentsDemo demo = new CustomizedArgumentsDemo();
+        CustomizedArguments demo = new CustomizedArguments();
         demo.customArguments();
         demo.argumentFactory();
     }

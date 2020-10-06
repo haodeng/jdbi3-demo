@@ -4,7 +4,7 @@ import org.jdbi.v3.core.Jdbi;
 import java.util.Arrays;
 import java.util.List;
 
-public class HandlerDemo
+public class Handler
 {
     /**
      * If your operation does not need to return a result, use Jdbi.useHandle(HandleConsumer):
@@ -60,7 +60,7 @@ public class HandlerDemo
     }
 
     public static void main(String[] args) {
-        HandlerDemo handlerDemo = new HandlerDemo();
+        Handler handlerDemo = new Handler();
         handlerDemo.useHandle();
         List<String> names = handlerDemo.withHandle();
         names.stream().forEach(n -> System.out.println(n));

@@ -8,7 +8,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class QueriesDemo {
+public class Queries {
 
     public void getResultSet()
     {
@@ -216,7 +216,7 @@ public class QueriesDemo {
     }
 
     public static void main(String[] args) {
-        QueriesDemo demo = new QueriesDemo();
+        Queries demo = new Queries();
 
         demo.getResultSet();
         demo.exactlyOneRow();
