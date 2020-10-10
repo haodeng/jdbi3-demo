@@ -1,6 +1,7 @@
 import model.Contact;
 import model.Phone;
 import model.User;
+import model.UserTestNested;
 import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.core.mapper.JoinRow;
 import org.jdbi.v3.core.mapper.JoinRowMapper;
@@ -69,10 +70,30 @@ public class ConstructorMappers {
         });
     }
 
+    public void constructorMapper_nested()
+    {
+        Jdbi jdbi = Jdbi.create("jdbc:h2:mem:test_constructorMapper_nested");
+        jdbi.useHandle(handle -> {
+            handle.registerRowMapper(ConstructorMapper.factory(UserTestNested.class));
+
+            handle.execute("create table user (id int primary key, name varchar(100), street varchar(100), city varchar(100), state varchar(100), zip varchar(100))");
+            handle.execute("insert into user (id, name, street, city, state, zip) values (?, ?, ?, ?, ?, ?)", 1, "Alice", "am st", "cph", "dk", "2100");
+            handle.execute("insert into user (id, name, street, city, state, zip) values (?, ?, ?, ?, ?, ?)", 2, "Bob", "prod st", "cph", "dk", "2200");
+
+            List<UserTestNested> users = handle
+                    .select("select id, name, street, city, state, zip from user")
+                    .mapTo(UserTestNested.class)
+                    .list();
+
+            System.out.println(users);
+        });
+    }
+
     public static void main(String[] args) {
         ConstructorMappers mapper = new ConstructorMappers();
         mapper.constructorMapper();
 
         mapper.constructorMapper_JoinRowMapper();
+        mapper.constructorMapper_nested();
     }
 }
