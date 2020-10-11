@@ -1,3 +1,4 @@
+package mapper;
 
 import com.google.common.collect.Multimap;
 import model.mapentry.Phone;

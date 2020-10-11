@@ -1,3 +1,5 @@
+package mapper;
+
 import bean.ContactBean;
 import bean.PhoneBean;
 import bean.UserBean;

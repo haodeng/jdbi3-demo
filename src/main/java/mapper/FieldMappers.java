@@ -1,6 +1,8 @@
-import model.fieldmapper.ContactTestFieldMapper;
-import model.fieldmapper.PhoneTestFieldMapper;
-import model.fieldmapper.UserTestFieldMapper;
+package mapper;
+
+import model.fieldmapper.Contact;
+import model.fieldmapper.Phone;
+import model.fieldmapper.User;
 import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.core.mapper.JoinRow;
 import org.jdbi.v3.core.mapper.JoinRowMapper;
@@ -13,24 +15,19 @@ import java.util.List;
  * (including private fields).
  */
 public class FieldMappers {
-    public class MyUser {
-        public int id;
-        public String name;
-    }
-
     public void fieldMapper()
     {
         Jdbi jdbi = Jdbi.create("jdbc:h2:mem:test_fieldMapper");
         jdbi.useHandle(handle -> {
-            handle.registerRowMapper(FieldMapper.factory(UserTestFieldMapper.class));
+            handle.registerRowMapper(FieldMapper.factory(User.class));
 
             handle.execute("create table user (id int primary key, name varchar(100))");
             handle.execute("insert into user (id, name) values (?, ?)", 1, "Alice");
             handle.execute("insert into user (id, name) values (?, ?)", 2, "Bob");
 
-            List<UserTestFieldMapper> users = handle
+            List<User> users = handle
                     .createQuery("select id, name from user")
-                    .mapTo(UserTestFieldMapper.class)
+                    .mapTo(User.class)
                     .list();
 
             System.out.println(users);
@@ -41,9 +38,9 @@ public class FieldMappers {
     {
         Jdbi jdbi = Jdbi.create("jdbc:h2:mem:test_fieldMapper_configColumnNamePrefix");
         jdbi.useHandle(handle -> {
-            handle.registerRowMapper(FieldMapper.factory(ContactTestFieldMapper.class, "c"));
-            handle.registerRowMapper(FieldMapper.factory(PhoneTestFieldMapper.class, "p"));
-            handle.registerRowMapper(JoinRowMapper.forTypes(ContactTestFieldMapper.class, PhoneTestFieldMapper.class));
+            handle.registerRowMapper(FieldMapper.factory(Contact.class, "c"));
+            handle.registerRowMapper(FieldMapper.factory(Phone.class, "p"));
+            handle.registerRowMapper(JoinRowMapper.forTypes(Contact.class, Phone.class));
 
             handle.execute("create table contacts (id int primary key, name varchar(100))");
             handle.execute("insert into contacts (id, name) values (?, ?)", 1, "Alice");
@@ -62,8 +59,8 @@ public class FieldMappers {
                     .list();
 
             contactPhones.forEach(contactPhone ->
-                    System.out.println(contactPhone.get(ContactTestFieldMapper.class) +
-                            " and " + contactPhone.get(PhoneTestFieldMapper.class)));
+                    System.out.println(contactPhone.get(Contact.class) +
+                            " and " + contactPhone.get(Phone.class)));
         });
     }
 
@@ -71,15 +68,15 @@ public class FieldMappers {
     {
         Jdbi jdbi = Jdbi.create("jdbc:h2:mem:test_beanMapper_nested");
         jdbi.useHandle(handle -> {
-            handle.registerRowMapper(FieldMapper.factory(UserTestFieldMapper.class));
+            handle.registerRowMapper(FieldMapper.factory(User.class));
 
             handle.execute("create table users (id int primary key, name varchar(100), street varchar(100), city varchar(100), state varchar(100), zip varchar(100))");
             handle.execute("insert into users (id, name, street, city, state, zip) values (?, ?, ?, ?, ?, ?)", 1, "Alice", "am st", "cph", "dk", "2100");
             handle.execute("insert into users (id, name, street, city, state, zip) values (?, ?, ?, ?, ?, ?)", 2, "Bob", "prod st", "cph", "dk", "2200");
 
-            List<UserTestFieldMapper> users = handle
+            List<User> users = handle
                     .select("select id, name, street, city, state, zip from users")
-                    .mapTo(UserTestFieldMapper.class)
+                    .mapTo(User.class)
                     .list();
             System.out.println(users);
         });

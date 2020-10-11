@@ -1,6 +1,6 @@
 package model.fieldmapper;
 
-public class ContactTestFieldMapper {
+public class Contact {
     public int id;
     public String name;
 

@@ -1,5 +1,5 @@
-import model.Money;
-import model.User;
+package mapper;
+
 import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.core.config.ConfigRegistry;
 import org.jdbi.v3.core.generic.GenericType;
@@ -15,7 +15,7 @@ import java.util.Optional;
 public class ColumnMapperFactory {
 
     /**
-     * A ColumnMapperFactory can produce column mappers for arbitrary types.
+     * A mapper.ColumnMapperFactory can produce column mappers for arbitrary types.
      *
      * Implementing a factory might be preferable to a regular column mapper if:
      *

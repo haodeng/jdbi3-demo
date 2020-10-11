@@ -1,3 +1,5 @@
+package mapper;
+
 import model.Money;
 import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.core.mapper.ColumnMapper;

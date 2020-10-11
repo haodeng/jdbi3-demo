@@ -1,3 +1,5 @@
+package mapper;
+
 import model.Contact;
 import model.Phone;
 import model.User;

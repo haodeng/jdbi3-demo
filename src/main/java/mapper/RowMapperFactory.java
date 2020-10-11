@@ -1,4 +1,5 @@
-import model.User;
+package mapper;
+
 import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.core.config.ConfigRegistry;
 import org.jdbi.v3.core.generic.GenericType;
@@ -13,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * A RowMapperFactory can produce row mappers for arbitrary types.
+ * A mapper.RowMapperFactory can produce row mappers for arbitrary types.
  *
  * Implementing a factory might be preferable to a regular row mapper if:
  *
@@ -65,8 +66,8 @@ public class RowMapperFactory {
 
             /*
             The config registry is a locator for config classes.
-            So when we call config.get(ColumnMappers.class),
-            we get back a ColumnMappers instance with the current column mapper configuration.
+            So when we call config.get(mapper.ColumnMappers.class),
+            we get back a mapper.ColumnMappers instance with the current column mapper configuration.
              */
             ColumnMappers columnMappers = config.get(ColumnMappers.class);
 
