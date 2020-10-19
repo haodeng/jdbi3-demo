@@ -7,7 +7,7 @@ public class StoredProcedureCalls {
 
     public void callProcedure()
     {
-        Jdbi jdbi = Jdbi.create("jdbc:h2:mem:test_byExecute");
+        Jdbi jdbi = Jdbi.create("jdbc:h2:mem:test_callProcedure");
         jdbi.useHandle(handle -> {
             //Create a call procedure in H2
             handle.execute("CREATE ALIAS NEXT_PRIME AS $$\n" +
