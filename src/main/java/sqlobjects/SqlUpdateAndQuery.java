@@ -6,6 +6,7 @@ import org.jdbi.v3.core.result.ResultIterable;
 import org.jdbi.v3.core.result.ResultIterator;
 import org.jdbi.v3.sqlobject.SqlObjectPlugin;
 import org.jdbi.v3.sqlobject.statement.SqlQuery;
+import org.jdbi.v3.sqlobject.statement.SqlUpdate;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,13 +29,13 @@ public class SqlUpdateAndQuery {
          * @param name
          * @return
          */
-        @org.jdbi.v3.sqlobject.statement.SqlUpdate("insert into users (id, name) values (?, ?)")
+        @SqlUpdate("insert into users (id, name) values (?, ?)")
         int insert(long id, String name);
 
         /**
          * @SqlUpdate can also be used for DDL (Data Definition Language) operations like creating or altering tables.
          */
-        @org.jdbi.v3.sqlobject.statement.SqlUpdate("create table users (id int primary key, name varchar(100))")
+        @SqlUpdate("create table users (id int primary key, name varchar(100))")
         void createTable();
 
         //When a multi-row method returns an empty result set, an empty collection is returned.
