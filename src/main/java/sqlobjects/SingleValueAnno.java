@@ -28,6 +28,11 @@ public class SingleValueAnno {
 
         //select a varchar[] column from a single row
         @SqlQuery("select roles from users where id = ?")
+        /**
+         * Normally, Jdbi would interpret List<String> to mean that the mapped type is String,
+         * and to collect all result rows into a list.
+         * The @SingleValue annotation causes Jdbi to treat List<String> as the mapped type instead.
+         */
         @SingleValue
         List<String> getUserRoles(long userId);
     }
