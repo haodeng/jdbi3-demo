@@ -1,11 +1,13 @@
 package sqlobjects;
 
-import model.User;
 import org.jdbi.v3.core.Handle;
 import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.core.config.ConfigRegistry;
 import org.jdbi.v3.core.generic.GenericTypes;
-import org.jdbi.v3.core.mapper.*;
+import org.jdbi.v3.core.mapper.ColumnMapper;
+import org.jdbi.v3.core.mapper.ColumnMapperFactory;
+import org.jdbi.v3.core.mapper.ColumnMappers;
+import org.jdbi.v3.core.mapper.NoSuchMapperException;
 import org.jdbi.v3.sqlobject.SqlObjectPlugin;
 import org.jdbi.v3.sqlobject.config.RegisterColumnMapperFactory;
 import org.jdbi.v3.sqlobject.statement.SqlQuery;
