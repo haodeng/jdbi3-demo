@@ -42,16 +42,18 @@ public class SingleValueAnno {
         Jdbi jdbi = Jdbi.create("jdbc:h2:mem:test_test");
         jdbi.installPlugin(new SqlObjectPlugin());
 
-        Handle handle = jdbi.open();
-        UserDao userDao = handle.attach(UserDao.class);
+        try (Handle handle = jdbi.open()) {
+            UserDao userDao = handle.attach(UserDao.class);
 
-        userDao.createTable();
-        //Insert array value (guest, admin)
-        userDao.insert(1L, "Bob", "(guest, admin)");
-        userDao.insert(2L, "Kim", "(admin)");
+            userDao.createTable();
+            //Insert array value (guest, admin)
+            userDao.insert(1L, "Bob", "(guest, admin)");
+            userDao.insert(2L, "Kim", "(admin)");
 
-        //Expect: [(guest, admin)]
-        System.out.println(userDao.getUserRoles(1));
+            //Expect: [(guest, admin)]
+            System.out.println(userDao.getUserRoles(1));
+        }
+
     }
 
     public static void main(String[] args) {

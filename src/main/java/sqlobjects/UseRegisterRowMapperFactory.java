@@ -43,17 +43,16 @@ public class UseRegisterRowMapperFactory {
         Jdbi jdbi = Jdbi.create("jdbc:h2:mem:test_testUserMapper");
         jdbi.installPlugin(new SqlObjectPlugin());
 
-        Handle handle = jdbi.open();
-        UseRegisterRowMapper.UserDao userDao = handle.attach(UseRegisterRowMapper.UserDao.class);
+        try (Handle handle = jdbi.open()) {
+            UserDao userDao = handle.attach(UserDao.class);
 
-        userDao.createTable();
-        userDao.insert(1, "Bob");
-        userDao.insert(2, "Jan");
+            userDao.createTable();
+            userDao.insert(1, "Bob");
+            userDao.insert(2, "Jan");
 
-        List<User> users = userDao.list();
-        users.forEach(user -> System.out.println(user));
-
-        handle.close();
+            List<User> users = userDao.list();
+            users.forEach(user -> System.out.println(user));
+        }
     }
 
     public static void main(String[] args) {

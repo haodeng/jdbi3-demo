@@ -90,14 +90,16 @@ public class UseRegisterBeanMapper {
         Jdbi jdbi = Jdbi.create("jdbc:h2:mem:test_testBeanMapper");
         jdbi.installPlugin(new SqlObjectPlugin());
 
-        Handle handle = jdbi.open();
-        UserDao userDao = handle.attach(UserDao.class);
+        try (Handle handle = jdbi.open()) {
+            UserDao userDao = handle.attach(UserDao.class);
 
-        userDao.createTable();
-        userDao.insert(1L, "Bob", 1);
-        userDao.insert(2L, "Kim", 2);
+            userDao.createTable();
+            userDao.insert(1L, "Bob", 1);
+            userDao.insert(2L, "Kim", 2);
 
-        userDao.list().forEach(user -> System.out.println(user));
+            userDao.list().forEach(user -> System.out.println(user));
+        }
+
     }
 
     public void testPrefixBeanMapper()
@@ -105,20 +107,23 @@ public class UseRegisterBeanMapper {
         Jdbi jdbi = Jdbi.create("jdbc:h2:mem:test_testPrefixBeanMapper");
         jdbi.installPlugin(new SqlObjectPlugin());
 
-        Handle handle = jdbi.open();
-        UserDao userDao = handle.attach(UserDao.class);
+        try (Handle handle = jdbi.open()) {
+            UserDao userDao = handle.attach(UserDao.class);
 
-        userDao.createTable();
-        userDao.insert(1L, "Bob", 1);
-        userDao.insert(2L, "Kim", 2);
+            userDao.createTable();
+            userDao.insert(1L, "Bob", 1);
+            userDao.insert(2L, "Kim", 2);
 
-        handle.execute("create table roles (id int primary key, name varchar(100))");
-        handle.execute("insert into roles (id, name) values (1, 'guest')");
-        handle.execute("insert into roles (id, name) values (2, 'admin')");
+            handle.execute("create table roles (id int primary key, name varchar(100))");
+            handle.execute("insert into roles (id, name) values (1, 'guest')");
+            handle.execute("insert into roles (id, name) values (2, 'admin')");
 
-        Map<User, Role> userRoleMap = userDao.getRolesPerUser();
-        userRoleMap.entrySet()
-                .forEach(entry -> System.out.println(entry.getKey() + ", " + entry.getValue()));
+            Map<User, Role> userRoleMap = userDao.getRolesPerUser();
+            userRoleMap.entrySet()
+                    .forEach(entry -> System.out.println(entry.getKey() + ", " + entry.getValue()));
+
+        }
+
     }
 
     public static void main(String[] args) {

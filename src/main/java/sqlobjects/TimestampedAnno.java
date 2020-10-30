@@ -25,14 +25,15 @@ public class TimestampedAnno {
         Jdbi jdbi = Jdbi.create("jdbc:h2:mem:GetGeneratedKeysAnno_test");
         jdbi.installPlugin(new SqlObjectPlugin());
 
-        Handle handle = jdbi.open();
-        handle.execute("create table times (val timestamp)");
+        try (Handle handle = jdbi.open()) {
+            handle.execute("create table times (val timestamp)");
 
-        TestDao testDao = handle.attach(TestDao.class);
-        testDao.insert();
+            TestDao testDao = handle.attach(TestDao.class);
+            testDao.insert();
 
-        List<Map<String, Object>> timesMap = handle.select("select * from times").mapToMap().list();
-        timesMap.stream().forEach(entry -> System.out.println(entry));
+            List<Map<String, Object>> timesMap = handle.select("select * from times").mapToMap().list();
+            timesMap.stream().forEach(entry -> System.out.println(entry));
+        }
     }
 
     public static void main(String[] args) {

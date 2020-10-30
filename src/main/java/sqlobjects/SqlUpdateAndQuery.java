@@ -80,18 +80,18 @@ public class SqlUpdateAndQuery {
         Jdbi jdbi = Jdbi.create("jdbc:h2:mem:testSqlUpdate");
         jdbi.installPlugin(new SqlObjectPlugin());
 
-        Handle handle = jdbi.open();
-        UserDao userDao = handle.attach(UserDao.class);
+        try (Handle handle = jdbi.open()) {
+            UserDao userDao = handle.attach(UserDao.class);
 
-        userDao.createTable();
-        userDao.insert(1, "Bob");
-        userDao.insert(2, "Jan");
+            userDao.createTable();
+            userDao.insert(1, "Bob");
+            userDao.insert(2, "Jan");
 
-        System.out.println(userDao.getName(1));
-        System.out.println(userDao.findName(10)); //Expect Optional.empty()
-        System.out.println(userDao.listNames().size());
+            System.out.println(userDao.getName(1));
+            System.out.println(userDao.findName(10)); //Expect Optional.empty()
+            System.out.println(userDao.listNames().size());
 
-        handle.close();
+        }
     }
 
     /**
@@ -104,25 +104,26 @@ public class SqlUpdateAndQuery {
         Jdbi jdbi = Jdbi.create("jdbc:h2:mem:test_interationOrStream");
         jdbi.installPlugin(new SqlObjectPlugin());
 
-        Handle handle = jdbi.open();
-        UserDao userDao = handle.attach(UserDao.class);
+        try (Handle handle = jdbi.open()) {
+            UserDao userDao = handle.attach(UserDao.class);
 
-        userDao.createTable();
-        userDao.insert(1, "Bob");
-        userDao.insert(2, "Jan");
+            userDao.createTable();
+            userDao.insert(1, "Bob");
+            userDao.insert(2, "Jan");
 
-        ResultIterable<String> names1 = userDao.getNamesAsIterable();
-        names1.stream().forEach(name -> System.out.println(name));
+            ResultIterable<String> names1 = userDao.getNamesAsIterable();
+            names1.stream().forEach(name -> System.out.println(name));
 
-        try (ResultIterator<String> names2 = userDao.getNamesAsIterator()) {
-            while (names2.hasNext())
-            {
-                System.out.println(names2.next());
+            try (ResultIterator<String> names2 = userDao.getNamesAsIterator()) {
+                while (names2.hasNext())
+                {
+                    System.out.println(names2.next());
+                }
             }
-        }
 
-        try (Stream<String> names3 = userDao.getNamesAsStream()) {
-            names3.forEach(name -> System.out.println(name));
+            try (Stream<String> names3 = userDao.getNamesAsStream()) {
+                names3.forEach(name -> System.out.println(name));
+            }
         }
     }
 

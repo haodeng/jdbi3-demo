@@ -89,22 +89,23 @@ public class SqlBatchAnno {
         Jdbi jdbi = Jdbi.create("jdbc:h2:mem:test_test");
         jdbi.installPlugin(new SqlObjectPlugin());
 
-        Handle handle = jdbi.open();
-        UserDao userDao = handle.attach(UserDao.class);
+        try (Handle handle = jdbi.open()) {
+            UserDao userDao = handle.attach(UserDao.class);
 
-        userDao.createTable();
-        /**
-         * This would execute:
-         * insert into users (id, name, email) values (1, 'foo', 'a@example.com');
-         * insert into users (id, name, email) values (2, 'bar', 'b@example.com');
-         * insert into users (id, name, email) values (3, 'baz', 'c@fake.com');
-         */
-        userDao.bulkInsert(
-                ImmutableList.of(1, 2, 3),
-                ImmutableList.of("foo", "bar", "baz").iterator(),
-                "a@example.com", "b@example.com", "c@fake.com");
+            userDao.createTable();
+            /**
+             * This would execute:
+             * insert into users (id, name, email) values (1, 'foo', 'a@example.com');
+             * insert into users (id, name, email) values (2, 'bar', 'b@example.com');
+             * insert into users (id, name, email) values (3, 'baz', 'c@fake.com');
+             */
+            userDao.bulkInsert(
+                    ImmutableList.of(1, 2, 3),
+                    ImmutableList.of("foo", "bar", "baz").iterator(),
+                    "a@example.com", "b@example.com", "c@fake.com");
 
-        System.out.println(userDao.listUserNames().size());
+            System.out.println(userDao.listUserNames().size());
+        }
     }
 
     public void test2()
@@ -112,22 +113,24 @@ public class SqlBatchAnno {
         Jdbi jdbi = Jdbi.create("jdbc:h2:mem:test_test2");
         jdbi.installPlugin(new SqlObjectPlugin());
 
-        Handle handle = jdbi.open();
-        UserDao userDao = handle.attach(UserDao.class);
-        handle.execute("create table contacts (id int primary key, name varchar(100), tenant_id int)");
+        try (Handle handle = jdbi.open()) {
+            UserDao userDao = handle.attach(UserDao.class);
+            handle.execute("create table contacts (id int primary key, name varchar(100), tenant_id int)");
 
-        User[] users = new User[]{
-                new User(1, "Bob"),
-                new User(2, "Jan")
-        };
-        /**
-         * This would execute:
-         * insert into contacts (id, name, tenant_id) values (1, 'Bob', 1);
-         * insert into contacts (id, name, tenant_id) values (2, 'Jan', 1);
-         */
-        userDao.bulkInsert(1, users);
+            User[] users = new User[]{
+                    new User(1, "Bob"),
+                    new User(2, "Jan")
+            };
+            /**
+             * This would execute:
+             * insert into contacts (id, name, tenant_id) values (1, 'Bob', 1);
+             * insert into contacts (id, name, tenant_id) values (2, 'Jan', 1);
+             */
+            userDao.bulkInsert(1, users);
 
-        System.out.println(userDao.listContactNames().size());
+            System.out.println(userDao.listContactNames().size());
+        }
+
     }
     public static void main(String[] args) {
         SqlBatchAnno sqlBatchAnno = new SqlBatchAnno();

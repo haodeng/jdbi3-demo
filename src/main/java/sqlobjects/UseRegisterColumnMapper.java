@@ -37,15 +37,16 @@ public class UseRegisterColumnMapper {
         Jdbi jdbi = Jdbi.create("jdbc:h2:mem:test_testColumnMapper");
         jdbi.installPlugin(new SqlObjectPlugin());
 
-        Handle handle = jdbi.open();
-        AccountDao accountDao = handle.attach(AccountDao.class);
+        try (Handle handle = jdbi.open()) {
+            AccountDao accountDao = handle.attach(AccountDao.class);
 
-        accountDao.createTable();
-        accountDao.insert(1L, "1000");
-        accountDao.insert(2L, "30000");
+            accountDao.createTable();
+            accountDao.insert(1L, "1000");
+            accountDao.insert(2L, "30000");
 
-        System.out.println(accountDao.getBalance(1));
-        System.out.println(accountDao.getBalance(2));
+            System.out.println(accountDao.getBalance(1));
+            System.out.println(accountDao.getBalance(2));
+        }
     }
 
     public static void main(String[] args) {

@@ -65,15 +65,17 @@ public class GetGeneratedKeysAnno {
         Jdbi jdbi = Jdbi.create("jdbc:h2:mem:GetGeneratedKeysAnno_test");
         jdbi.installPlugin(new SqlObjectPlugin());
 
-        Handle handle = jdbi.open();
-        UserDao userDao = handle.attach(UserDao.class);
+        try (Handle handle = jdbi.open()) {
+            UserDao userDao = handle.attach(UserDao.class);
 
-        userDao.createTable();
-        List<User> users = userDao.createUsers("Alice", "Bob", "Charlie");
-        users.forEach(System.out::println);
+            userDao.createTable();
+            List<User> users = userDao.createUsers("Alice", "Bob", "Charlie");
+            users.forEach(System.out::println);
 
-        List<Map<String, Object>> usersMap = handle.select("select * from users").mapToMap().list();
-        usersMap.stream().forEach(entry -> System.out.println(entry));
+            List<Map<String, Object>> usersMap = handle.select("select * from users").mapToMap().list();
+            usersMap.stream().forEach(entry -> System.out.println(entry));
+        }
+
     }
 
     public static void main(String[] args) {

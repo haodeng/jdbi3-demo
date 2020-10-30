@@ -56,15 +56,15 @@ public class UseRegisterColumnMapperFactory {
         Jdbi jdbi = Jdbi.create("jdbc:h2:mem:test_testColumnMapperFactory");
         jdbi.installPlugin(new SqlObjectPlugin());
 
-        Handle handle = jdbi.open();
-        UserDao userDao = handle.attach(UserDao.class);
+        try (Handle handle = jdbi.open()) {
+            UserDao userDao = handle.attach(UserDao.class);
 
-        userDao.createTable();
-        userDao.insert(1L, "Bob");
-        userDao.insert(2L, "Kim");
+            userDao.createTable();
+            userDao.insert(1L, "Bob");
+            userDao.insert(2L, "Kim");
 
-        userDao.listUserNames().forEach(name -> System.out.println(name));
-
+            userDao.listUserNames().forEach(name -> System.out.println(name));
+        }
     }
 
     public static void main(String[] args) {

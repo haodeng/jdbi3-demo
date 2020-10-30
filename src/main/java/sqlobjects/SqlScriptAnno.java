@@ -25,11 +25,13 @@ public class SqlScriptAnno {
         Jdbi jdbi = Jdbi.create("jdbc:h2:mem:SqlScriptAnno_test");
         jdbi.installPlugin(new SqlObjectPlugin());
 
-        Handle handle = jdbi.open();
-        TestDao testDao = handle.attach(TestDao.class);
+        try (Handle handle = jdbi.open()) {
+            TestDao testDao = handle.attach(TestDao.class);
 
-        int[] results = testDao.doSomeUpdates();
-        Arrays.stream(results).forEach(System.out::println);
+            int[] results = testDao.doSomeUpdates();
+            Arrays.stream(results).forEach(System.out::println);
+        }
+
     }
 
     public static void main(String[] args) {
