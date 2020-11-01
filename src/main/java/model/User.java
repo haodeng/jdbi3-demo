@@ -6,6 +6,8 @@ public class User {
     private int id;
     private String name;
 
+    public User(){}
+
     /**
      * The @ConstructorProperties annotations tells Jdbi the property name of each constructor parameter,
      * so it can figure out which column corresponds to each constructor parameter.
